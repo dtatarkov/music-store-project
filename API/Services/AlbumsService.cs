@@ -5,9 +5,9 @@ namespace API.Services
 {
     public class AlbumsService: IAlbumsService
     {
-        private readonly ApplicationContext dbContext;
+        private readonly IApplicationContext dbContext;
 
-        public AlbumsService(ApplicationContext dbContext)
+        public AlbumsService(IApplicationContext dbContext)
         {
             this.dbContext = dbContext;
         }

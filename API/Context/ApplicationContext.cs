@@ -5,7 +5,7 @@ using Npgsql;
 
 namespace API.Context
 {
-    public class ApplicationContext: DbContext
+    public class ApplicationContext: DbContext, IApplicationContext
     {
         private readonly AppSettings appSettings;
 
