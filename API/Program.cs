@@ -1,4 +1,5 @@
 using API.Context;
+using API.Services;
 using API.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton(services => new AppSettings(services.GetRequiredService<IConfiguration>()));
 builder.Services.AddDbContext<ApplicationContext>();
+builder.Services.AddScoped<IAlbumsService, AlbumsService>();
 
 var app = builder.Build();
 
