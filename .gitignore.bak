@@ -7,5 +7,7 @@
 /obj
 /API/bin
 /API/obj
-/API2/bin
-/API2/obj
+/API.MockData/bin
+/API.MockData/obj
+/API.Tests/bin
+/API.Tests/obj
