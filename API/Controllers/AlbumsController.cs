@@ -1,4 +1,5 @@
 ﻿using API.DTO;
+using API.Expressions;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,10 +17,6 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public IQueryable<AlbumDTO> Get()
-        {
-            throw new NotImplementedException();
-            //return albumsService.GetAlbums();
-        }
+        public IQueryable<AlbumDTO> Get() => albumsService.GetAlbums().Select(AlbumExpressions.ToDTO);
     }
 }
