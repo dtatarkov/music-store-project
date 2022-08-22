@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    build:
+      context: .
+      dockerfile: API/Dockerfile
+
+  api2:
+    image: ${DOCKER_REGISTRY-}api2
+    build:
+      context: .
+      dockerfile: API2/Dockerfile
