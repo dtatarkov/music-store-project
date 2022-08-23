@@ -22,6 +22,11 @@ namespace API.Services
             return dbContext.Albums.AsQueryable();
         }
 
+        public Album? GetAlbumById(int albumId)
+        {
+            return dbContext.Albums.FirstOrDefault(album => album.AlbumId == albumId);
+        }
+
         public Album AddAlbum(NewAlbumDTO data)
         {
             var album = data.ToAlbum();

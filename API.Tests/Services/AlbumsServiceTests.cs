@@ -37,6 +37,26 @@ namespace API.Tests.Services
         }
 
         [Fact]
+        public void GetAlbumById()
+        {
+            var data = new List<Album>
+            {
+                new Album { AlbumId = 1 }
+            }.AsQueryable();
+
+            var dbSetMock = data.BuildMockDbSet();
+
+            var contextMock = new Mock<IApplicationContext>();
+            contextMock.Setup(c => c.Albums).Returns(dbSetMock.Object);
+
+            var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object);
+            var album = service.GetAlbumById(1);
+
+            Assert.NotNull(album);
+            Assert.Equal(1, album!.AlbumId);
+        }
+
+        [Fact]
         public void AddAlbum()
         {
             var albumDTO = new NewAlbumDTO();
