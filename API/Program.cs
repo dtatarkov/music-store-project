@@ -1,6 +1,7 @@
 using API.Context;
 using API.Services;
 using API.Settings;
+using API.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +11,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton(services => new AppSettings(services.GetRequiredService<IConfiguration>()));
 builder.Services.AddDbContext<IApplicationContext, ApplicationContext>();
+
+builder.Services.AddSingleton(services => new AppSettings(services.GetRequiredService<IConfiguration>()));
+builder.Services.AddSingleton<IAlbumValidator, AlbumValidator>();
+
 builder.Services.AddScoped<IAlbumsService, AlbumsService>();
 
 var app = builder.Build();

@@ -1,10 +1,6 @@
 ﻿using API.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace API.Context
 {
@@ -12,6 +8,7 @@ namespace API.Context
     {
         DbSet<Album> Albums { get; set; }
 
+        public EntityEntry Add(object entity);
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }
