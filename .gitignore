@@ -5,7 +5,5 @@
 /.vs
 /bin
 /obj
-/API/bin
-/API/obj
-/API.Tests/bin
-/API.Tests/obj
+/*/bin
+/*/obj

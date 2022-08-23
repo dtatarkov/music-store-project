@@ -30,3 +30,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+//expose Program class so it can be access by integration tests
+public partial class Program { }
