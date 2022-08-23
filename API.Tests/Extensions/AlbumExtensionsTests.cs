@@ -1,5 +1,6 @@
 ﻿using API.DTO;
 using API.Extensions;
+using API.MockData;
 
 namespace API.Tests.Extensions
 {
@@ -8,11 +9,7 @@ namespace API.Tests.Extensions
         [Fact]
         public void ToAlbum()
         {
-            var newAlbumDTO = new NewAlbumDTO
-            {
-                Title = "Test Title",
-                Description = "Test Description"
-            };
+            var newAlbumDTO = AlbumsMockData.newAlbumDTO;
 
             var album = newAlbumDTO.ToAlbum();
 

@@ -3,6 +3,7 @@ using API.DTO;
 using API.Entities;
 using API.Extensions;
 using API.Validators;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Services
 {
@@ -22,9 +23,9 @@ namespace API.Services
             return dbContext.Albums.AsQueryable();
         }
 
-        public Album? GetAlbumById(int albumId)
+        public async Task<Album?> GetAlbumByIdAsync(long albumId)
         {
-            return dbContext.Albums.FirstOrDefault(album => album.AlbumId == albumId);
+            return await dbContext.Albums.FirstOrDefaultAsync(album => album.AlbumId == albumId);
         }
 
         public Album AddAlbum(NewAlbumDTO data)

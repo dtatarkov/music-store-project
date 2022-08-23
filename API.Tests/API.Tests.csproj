@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\API.MockData\API.MockData.csproj" />
     <ProjectReference Include="..\API\API.csproj" />
   </ItemGroup>
 

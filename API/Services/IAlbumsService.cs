@@ -6,7 +6,7 @@ namespace API.Services
     public interface IAlbumsService
     {
         IQueryable<Album> GetAlbums();
-        Album? GetAlbumById(int albumId);
+        Task<Album?> GetAlbumByIdAsync(long albumId);
         Album AddAlbum(NewAlbumDTO data);
     }
 }

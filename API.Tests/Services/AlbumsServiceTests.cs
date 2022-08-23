@@ -1,6 +1,7 @@
 ﻿using API.Context;
 using API.DTO;
 using API.Entities;
+using API.MockData;
 using API.Services;
 using API.Validators;
 using MockQueryable.Moq;
@@ -15,14 +16,7 @@ namespace API.Tests.Services
         [Fact]
         public void GetAlbums()
         {
-            var data = new List<Album>
-            {
-                new Album { AlbumId = 1 },
-                new Album { AlbumId = 2 },
-                new Album { AlbumId = 3 },
-            }.AsQueryable();
-
-            var dbSetMock = data.BuildMockDbSet();
+            var dbSetMock = AlbumsMockData.albums.BuildMockDbSet();
 
             var contextMock = new Mock<IApplicationContext>();
             contextMock.Setup(c => c.Albums).Returns(dbSetMock.Object);
@@ -37,20 +31,15 @@ namespace API.Tests.Services
         }
 
         [Fact]
-        public void GetAlbumById()
+        public async Task GetAlbumByIdAsync()
         {
-            var data = new List<Album>
-            {
-                new Album { AlbumId = 1 }
-            }.AsQueryable();
-
-            var dbSetMock = data.BuildMockDbSet();
+            var dbSetMock = AlbumsMockData.albums.BuildMockDbSet();
 
             var contextMock = new Mock<IApplicationContext>();
             contextMock.Setup(c => c.Albums).Returns(dbSetMock.Object);
 
             var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object);
-            var album = service.GetAlbumById(1);
+            var album = await service.GetAlbumByIdAsync(1);
 
             Assert.NotNull(album);
             Assert.Equal(1, album!.AlbumId);

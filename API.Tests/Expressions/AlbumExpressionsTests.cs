@@ -1,5 +1,6 @@
 ﻿using API.Entities;
 using API.Expressions;
+using API.MockData;
 
 namespace API.Tests.Expressions
 {
@@ -8,14 +9,7 @@ namespace API.Tests.Expressions
         [Fact]
         public void ToDTOTest()
         {
-            var album = new Album
-            {
-                AlbumId = 1,
-                Title = "Test Title",
-                Description = "Test Description",
-                CreatedDate = DateTimeOffset.UtcNow,
-                UpdatedDate = DateTimeOffset.UtcNow
-            };
+            var album = AlbumsMockData.albumWithAllFieldsFilled;
 
             var albumDTO = AlbumExpressions.ToDTO.Compile().Invoke(album);
 

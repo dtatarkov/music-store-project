@@ -1,5 +1,6 @@
 ﻿using API.DTO;
 using API.Entities;
+using API.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace API.Extensions
 {
     public static class AlbumExtensions
     {
+        private static readonly Func<Album, AlbumDTO> toDTO = AlbumExpressions.ToDTO.Compile();
+
         public static Album ToAlbum(this NewAlbumDTO data)
         {
             return new Album
@@ -18,5 +21,7 @@ namespace API.Extensions
                 Description = data.Description
             };
         }
+
+        public static AlbumDTO ToDTO(this Album album) => toDTO(album);
     }
 }
