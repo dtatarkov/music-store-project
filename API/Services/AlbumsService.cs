@@ -12,10 +12,12 @@ namespace API.Services
         private readonly IApplicationContext dbContext;
         private readonly IAlbumValidator albumValidator;
 
-        public AlbumsService(IApplicationContext dbContext, IAlbumValidator albumValidator)
+        public AlbumsService(
+            IApplicationContext dbContext, 
+            IAlbumValidator albumValidator)
         {
             this.dbContext = dbContext;
-            this.albumValidator = albumValidator;
+            this.albumValidator = albumValidator;            
         }
 
         public IQueryable<Album> GetAlbums()

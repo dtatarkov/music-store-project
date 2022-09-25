@@ -12,8 +12,7 @@ namespace API.LogsDB.Entities
 
         [StringLength(50)]
         public string Application { get; set; } = string.Empty;
-        public DateTimeOffset Logged { get; set; } = DateTimeOffset.Now;
-
+        
         [StringLength(50)]
         public string Level { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
@@ -22,5 +21,7 @@ namespace API.LogsDB.Entities
         public string Logger { get; set; } = string.Empty;
         public string Callsite { get; set; } = string.Empty;
         public string Exception { get; set; } = string.Empty;
+
+        public DateTimeOffset CreateDate { get; set; } = DateTimeOffset.Now;
     }
 }

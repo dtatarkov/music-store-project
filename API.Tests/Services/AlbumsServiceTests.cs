@@ -1,9 +1,9 @@
 ﻿using API.Context;
 using API.DTO;
-using API.Entities;
 using API.MockData;
 using API.Services;
 using API.Validators;
+using Microsoft.Extensions.Logging;
 using MockQueryable.Moq;
 using Moq;
 
@@ -12,6 +12,7 @@ namespace API.Tests.Services
     public class AlbumsServiceTests
     {
         private readonly Mock<IAlbumValidator> albumsValidatorMock = new Mock<IAlbumValidator>();
+        private readonly Mock<ILogger<AlbumsService>> loggerMock = new Mock<ILogger<AlbumsService>>();
 
         [Fact]
         public void GetAlbums()
@@ -21,7 +22,7 @@ namespace API.Tests.Services
             var contextMock = new Mock<IApplicationContext>();
             contextMock.Setup(c => c.Albums).Returns(dbSetMock.Object);
 
-            var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object);
+            var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object, loggerMock.Object);
             var albums = service.GetAlbums().ToArray();
 
             Assert.Equal(3, albums.Length);
@@ -38,7 +39,7 @@ namespace API.Tests.Services
             var contextMock = new Mock<IApplicationContext>();
             contextMock.Setup(c => c.Albums).Returns(dbSetMock.Object);
 
-            var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object);
+            var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object, loggerMock.Object);
             var album = await service.GetAlbumByIdAsync(1);
 
             Assert.NotNull(album);
@@ -52,7 +53,7 @@ namespace API.Tests.Services
 
             var contextMock = new Mock<IApplicationContext>();
 
-            var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object);
+            var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object, loggerMock.Object);
             var album = service.AddAlbum(albumDTO);
 
             contextMock.Verify(m => m.Add(album));

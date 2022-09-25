@@ -2,14 +2,18 @@ using API.Context;
 using API.Services;
 using API.Settings;
 using API.Validators;
+using NLog;
+using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+GlobalDiagnosticsContext.Set("connectionString", builder.Configuration.GetValue<string>("LogsDB:ConnectionString"));
+
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddEndpointsApiExplorer(); // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<IApplicationContext, ApplicationContext>();
 
