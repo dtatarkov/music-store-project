@@ -6,3 +6,17 @@ services:
     build:
       context: .
       dockerfile: API/Dockerfile
+    environment:
+        DB__CONNECTIONSTRING: Host=apidb;Database=music_store_project_api;User ID=postgres;Persist Security Info=True
+        LogsDB__ConnectionString: Host=apidb;User ID=postgres;Password=2305930O!;Database=music_store_project_logs;Pooling=true;
+  apidb:
+      image: "postgres:14.5"
+      environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=2305930O!
+        - POSTGRES_INITDB_ARGS=--data-checksums
+        - PGDATA=/var/lib/postgresql/data/pgdata/
+      volumes:
+        - ./database:/var/lib/postgresql/data
+      ports:
+        - 5716:5432
