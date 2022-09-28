@@ -4,10 +4,12 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "composeLaunchAction": "LaunchBrowser",
-      "composeLaunchServiceName": "api",
-      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
+      "composeLaunchServiceName": "client",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/home",
       "serviceActions": {
-        "api": "StartDebugging"        
+        "api": "StartDebugging",
+        "apidb": "StartWithoutDebugging",
+        "client": "StartDebugging"
       }
     }
   }
