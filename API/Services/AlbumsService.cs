@@ -31,7 +31,7 @@ namespace API.Services
             return await dbContext.Albums.FirstOrDefaultAsync(album => album.AlbumId == albumId);
         }
 
-        public Album AddAlbum(AlbumUpdateDTO data)
+        public Album AddAlbum(NewAlbumDTO data)
         {
             albumValidator.ValidateNew(data);
 
@@ -41,7 +41,7 @@ namespace API.Services
             return album;
         }
 
-        public async Task<Album> UpdateAlbumAsync(long albumId, UpdatedAlbumDTO data)
+        public async Task<Album> UpdateAlbumAsync(long albumId, AlbumUpdateDTO data)
         {
             var album = await GetAlbumByIdAsync(albumId);
 

@@ -28,7 +28,7 @@ namespace API.IntegrationTests.Controllers
 
         [Theory]
         [MemberData(nameof(AlbumsMockData.GetAlbumsSavingTestDataSetGenerator), MemberType = typeof(AlbumsMockData))]
-        public async Task Post(AlbumUpdateDTO newAlbumData, HttpStatusCode expectedStatusCode)
+        public async Task Post(NewAlbumDTO newAlbumData, HttpStatusCode expectedStatusCode)
         {
             using var app = new TestsApplication();
             using var client = app.CreateClient();
@@ -52,7 +52,7 @@ namespace API.IntegrationTests.Controllers
 
         [Theory]
         [MemberData(nameof(AlbumsMockData.GetAlbumsUpdateTestDataSetGenerator), MemberType = typeof(AlbumsMockData))]
-        public async Task Put(long albumId, UpdatedAlbumDTO updatedAlbumData, HttpStatusCode expectedStatusCode)
+        public async Task Put(long albumId, AlbumUpdateDTO updatedAlbumData, HttpStatusCode expectedStatusCode)
         {
             using var app = new TestsApplication();
             using var client = app.CreateClient();
