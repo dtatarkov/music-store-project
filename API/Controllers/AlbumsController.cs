@@ -24,12 +24,12 @@ namespace API.Controllers
         public IQueryable<AlbumDTO> Get() => albumsService.GetAlbums().Select(AlbumExpressions.ToDTO);
 
         [HttpPost]
-        public async Task<AlbumDTO?> Post(NewAlbumDTO data)
+        public async Task<AlbumDTO> Post(NewAlbumDTO data)
         {
             var album = albumsService.AddAlbum(data);
             await applicationContext.SaveChangesAsync();
 
-            return (await albumsService.GetAlbumByIdAsync(album.AlbumId))?.ToDTO();            
+            return (await albumsService.GetAlbumByIdAsync(album.AlbumId))!.ToDTO();
         }
     }
 }

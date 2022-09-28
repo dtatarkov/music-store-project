@@ -7,12 +7,13 @@ using NLog.Web;
 
 public class Program
 {
-    private static async Task Main(string[] args)
+    private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
         GlobalDiagnosticsContext.Set("connectionString", builder.Configuration.GetValue<string>("LogsDB:ConnectionString"));
-        
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
         builder.Logging.ClearProviders();
         builder.Host.UseNLog();
 
