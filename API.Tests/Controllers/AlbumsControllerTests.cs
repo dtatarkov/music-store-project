@@ -5,6 +5,7 @@ using API.Entities;
 using API.Extensions;
 using API.MockData;
 using API.Services;
+using MockQueryable.Moq;
 using Moq;
 
 namespace API.Tests.Controllers
@@ -73,6 +74,26 @@ namespace API.Tests.Controllers
             Assert.Equal(albumId, savedAlbum!.AlbumId);
             Assert.Equal(albumUpdateData.Title, savedAlbum!.Title);
             Assert.Equal(albumUpdateData.Description, savedAlbum!.Description);
+        }
+
+        public async Task Delete()
+        {
+            var albumId = 1;
+
+            var dbSetMock = AlbumsMockData.albums.BuildMockDbSet();
+            var removedAlbum = AlbumsMockData.albums.First(a => a.AlbumId == albumId);
+
+            var contextMock = new Mock<IApplicationContext>();
+            contextMock.Setup(c => c.Albums).Returns(dbSetMock.Object);
+
+            var albumsServiceMock = new Mock<IAlbumsService>();
+            albumsServiceMock.Setup(m => m.RemoveAlbumAsync(albumId)).Returns(Task.FromResult(removedAlbum));
+
+            var controller = new AlbumsController(contextMock.Object, albumsServiceMock.Object);
+            await controller.Delete(albumId);
+
+            albumsServiceMock.Verify(m => m.RemoveAlbumAsync(albumId));
+            contextMock.Verify(m => m.SaveChangesAsync(default));
         }
     }
 }

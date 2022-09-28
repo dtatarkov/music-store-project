@@ -8,7 +8,8 @@ namespace API.Context
     {
         DbSet<Album> Albums { get; set; }
 
-        public EntityEntry Add(object entity);
+        public EntityEntry<TEntity> Add<TEntity>(TEntity entity) where TEntity : class;
+        public EntityEntry<TEntity> Remove<TEntity>(TEntity entity) where TEntity : class;
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

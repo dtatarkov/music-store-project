@@ -41,5 +41,13 @@ namespace API.Controllers
 
             return (await albumsService.GetAlbumByIdAsync(album.AlbumId))!.ToDTO();
         }
+
+        [HttpDelete]
+        [Route("{albumId:long}")]
+        public async Task Delete(long albumId)
+        {
+            await albumsService.RemoveAlbumAsync(albumId);
+            await applicationContext.SaveChangesAsync();
+        }
     }
 }

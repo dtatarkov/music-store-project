@@ -1,9 +1,7 @@
 ﻿using API.Context;
-using API.DTO;
 using API.MockData;
 using API.Services;
 using API.Validators;
-using Microsoft.Extensions.Logging;
 using MockQueryable.Moq;
 using Moq;
 
@@ -31,18 +29,34 @@ namespace API.Tests.Services
         }
 
         [Fact]
-        public async Task GetAlbumByIdAsync()
+        public async Task GetAlbumByIdAsync_ReturnsExistingEntity()
         {
+            var albumId = 1;
             var dbSetMock = AlbumsMockData.albums.BuildMockDbSet();
 
             var contextMock = new Mock<IApplicationContext>();
             contextMock.Setup(c => c.Albums).Returns(dbSetMock.Object);
 
             var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object);
-            var album = await service.GetAlbumByIdAsync(1);
+            var album = await service.GetAlbumByIdAsync(albumId);
 
             Assert.NotNull(album);
-            Assert.Equal(1, album!.AlbumId);
+            Assert.Equal(albumId, album!.AlbumId);
+        }
+
+        [Fact]
+        public async Task GetAlbumByIdAsync_ReturnsNullWhenEntityNotFound()
+        {
+            var albumId = -1;
+            var dbSetMock = AlbumsMockData.albums.BuildMockDbSet();
+
+            var contextMock = new Mock<IApplicationContext>();
+            contextMock.Setup(c => c.Albums).Returns(dbSetMock.Object);
+
+            var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object);
+            var album = await service.GetAlbumByIdAsync(albumId);
+
+            Assert.Null(album);
         }
 
         [Fact]
@@ -59,7 +73,7 @@ namespace API.Tests.Services
         }
 
         [Fact]
-        public async Task UpdateAlbum()
+        public async Task UpdateAlbumAsync_UpdatesExistingEntity()
         {
             var albumToUpdateId = 1;
             var updatedAlbumDTO = AlbumsMockData.updatedAlbumDTO;
@@ -75,6 +89,55 @@ namespace API.Tests.Services
             Assert.Equal(albumToUpdateId, updatedAlbum.AlbumId);
             Assert.Equal(updatedAlbumDTO.Title, updatedAlbum.Title);
             Assert.Equal(updatedAlbumDTO.Description, updatedAlbum.Description);
+        }
+
+        [Fact]
+        public async Task UpdateAlbumAsync_ThrowsErrorWhenEntityNotFound()
+        {
+            var albumToUpdateId = -1;
+            var updatedAlbumDTO = AlbumsMockData.updatedAlbumDTO;
+
+            var dbSetMock = AlbumsMockData.albums.BuildMockDbSet();
+
+            var contextMock = new Mock<IApplicationContext>();
+            contextMock.Setup(c => c.Albums).Returns(dbSetMock.Object);
+
+            var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object);
+            var exception = await Record.ExceptionAsync(() => service.UpdateAlbumAsync(albumToUpdateId, updatedAlbumDTO));
+
+            Assert.NotNull(exception);
+        }
+
+        [Fact]
+        public async Task RemoveAlbumAsync_RemovesExistingEntity()
+        {
+            var albumId = 1;
+
+            var dbSetMock = AlbumsMockData.albums.BuildMockDbSet();
+
+            var contextMock = new Mock<IApplicationContext>();
+            contextMock.Setup(c => c.Albums).Returns(dbSetMock.Object);
+
+            var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object);
+            var removedAlbum = await service.RemoveAlbumAsync(albumId);
+
+            contextMock.Verify(m => m.Remove(removedAlbum));
+        }
+
+        [Fact]
+        public async Task RemoveAlbumAsync_ThrowsExceptionWhenEntityNotFound()
+        {
+            var albumId = -1;
+
+            var dbSetMock = AlbumsMockData.albums.BuildMockDbSet();
+
+            var contextMock = new Mock<IApplicationContext>();
+            contextMock.Setup(c => c.Albums).Returns(dbSetMock.Object);
+
+            var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object);
+            var exception = await Record.ExceptionAsync(() => service.RemoveAlbumAsync(albumId));
+
+            Assert.NotNull(exception);
         }
     }
 }

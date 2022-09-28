@@ -9,5 +9,6 @@ namespace API.Services
         Task<Album?> GetAlbumByIdAsync(long albumId);
         Album AddAlbum(AlbumUpdateDTO data);
         Task<Album> UpdateAlbumAsync(long albumId, UpdatedAlbumDTO data);
+        Task<Album> RemoveAlbumAsync(long albumId);
     }
 }

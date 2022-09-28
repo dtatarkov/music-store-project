@@ -42,5 +42,12 @@ namespace API.MockData
             yield return new object[] { 0, new UpdatedAlbumDTO { Title = "Test Title" }, HttpStatusCode.InternalServerError };
             yield return new object[] { -1, new UpdatedAlbumDTO { Title = "Test Title" }, HttpStatusCode.InternalServerError };
         }
+
+        public static IEnumerable<object[]> GetAlbumsRemoveTestDataSetGenerator()
+        {
+            yield return new object[] { 1, HttpStatusCode.OK };
+            yield return new object[] { 0, HttpStatusCode.InternalServerError };
+            yield return new object[] { -1, HttpStatusCode.InternalServerError };
+        }
     }
 }

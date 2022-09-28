@@ -74,5 +74,18 @@ namespace API.IntegrationTests.Controllers
                 Assert.Equal(updatedAlbumData.Description, savedAlbum.Description);
             }
         }
+
+        [Theory]
+        [MemberData(nameof(AlbumsMockData.GetAlbumsRemoveTestDataSetGenerator), MemberType = typeof(AlbumsMockData))]
+        public async Task Delete(long albumId, HttpStatusCode expectedStatusCode)
+        {
+            using var app = new TestsApplication();
+            using var client = app.CreateClient();
+
+            var request = new HttpRequestMessage(new HttpMethod("Delete"), $"/v1/albums/{albumId}");
+            var response = await client.SendAsync(request);
+
+            Assert.Equal(expectedStatusCode, response.StatusCode);
+        }
     }
 }

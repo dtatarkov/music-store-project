@@ -55,5 +55,17 @@ namespace API.Services
 
             return album;
         }
+
+        public async Task<Album> RemoveAlbumAsync(long albumId)
+        {
+            var album = await GetAlbumByIdAsync(albumId);
+
+            if (album == null)
+                throw new EntityNotFoundException("Album not found");
+
+            dbContext.Remove(album);
+
+            return album;
+        }
     }
 }
