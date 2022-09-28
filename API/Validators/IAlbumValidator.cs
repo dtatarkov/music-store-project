@@ -10,7 +10,7 @@ namespace API.Validators
 {
     public interface IAlbumValidator
     {
-        void ValidateNew(NewAlbumDTO album);
+        void ValidateNew(AlbumUpdateDTO album);
         void ValidateUpdate(UpdatedAlbumDTO album);
     }
 }

@@ -53,24 +53,26 @@ namespace API.Tests.Controllers
         [Fact]
         public async Task Put()
         {
-            var updatedAlbumData = AlbumsMockData.updatedAlbumDTO;
-            var updatedAlbum = updatedAlbumData.ToAlbum();
+            var albumId = 1;
+
+            var albumUpdateData = AlbumsMockData.updatedAlbumDTO;
+            var updatedAlbum = albumUpdateData.ToAlbum(albumId);
 
             var applicationContextMock = new Mock<IApplicationContext>();
 
             var albumsServiceMock = new Mock<IAlbumsService>();
-            albumsServiceMock.Setup(m => m.UpdateAlbumAsync(updatedAlbumData)).Returns(Task.FromResult(updatedAlbum));
+            albumsServiceMock.Setup(m => m.UpdateAlbumAsync(albumId, albumUpdateData)).Returns(Task.FromResult(updatedAlbum));
             albumsServiceMock.Setup(m => m.GetAlbumByIdAsync(updatedAlbum.AlbumId)).Returns(Task.FromResult((Album?)updatedAlbum));
 
             var controller = new AlbumsController(applicationContextMock.Object, albumsServiceMock.Object);
-            var savedAlbum = await controller.Put(updatedAlbumData);
+            var savedAlbum = await controller.Put(albumId, albumUpdateData);
 
             applicationContextMock.Verify(m => m.SaveChangesAsync(default));
 
             Assert.NotNull(savedAlbum);
-            Assert.Equal(updatedAlbumData.AlbumId, savedAlbum!.AlbumId);
-            Assert.Equal(updatedAlbumData.Title, savedAlbum!.Title);
-            Assert.Equal(updatedAlbumData.Description, savedAlbum!.Description);
+            Assert.Equal(albumId, savedAlbum!.AlbumId);
+            Assert.Equal(albumUpdateData.Title, savedAlbum!.Title);
+            Assert.Equal(albumUpdateData.Description, savedAlbum!.Description);
         }
     }
 }

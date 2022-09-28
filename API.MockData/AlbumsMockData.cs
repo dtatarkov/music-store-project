@@ -16,7 +16,7 @@ namespace API.MockData
             albumWithAllFieldsFilled
         }.AsQueryable();
 
-        public static NewAlbumDTO newAlbumDTO = new NewAlbumDTO
+        public static AlbumUpdateDTO newAlbumDTO = new AlbumUpdateDTO
         {
             Title = "Test Title",
             Description = "Test Description"
@@ -24,24 +24,23 @@ namespace API.MockData
 
         public static UpdatedAlbumDTO updatedAlbumDTO = new UpdatedAlbumDTO
         {
-            AlbumId = 1,
             Title = "Updated Test Title",
             Description = "Updated Test Description"
         };
 
         public static IEnumerable<object[]> GetAlbumsSavingTestDataSetGenerator() {
-            yield return new object[] { new NewAlbumDTO { Title = "Test Title", Description = "Test Description" }, HttpStatusCode.OK };
-            yield return new object[] { new NewAlbumDTO { Title = "Test Title" }, HttpStatusCode.OK };
-            yield return new object[] { new NewAlbumDTO { }, HttpStatusCode.InternalServerError };
+            yield return new object[] { new AlbumUpdateDTO { Title = "Test Title", Description = "Test Description" }, HttpStatusCode.OK };
+            yield return new object[] { new AlbumUpdateDTO { Title = "Test Title" }, HttpStatusCode.OK };
+            yield return new object[] { new AlbumUpdateDTO { }, HttpStatusCode.InternalServerError };
         }
 
         public static IEnumerable<object[]> GetAlbumsUpdateTestDataSetGenerator()
         {
-            yield return new object[] { new UpdatedAlbumDTO { AlbumId = 1, Title = "Test Title", Description = "Test Description" }, HttpStatusCode.OK };
-            yield return new object[] { new UpdatedAlbumDTO { AlbumId = 1, Title = "Test Title" }, HttpStatusCode.OK };
-            yield return new object[] { new UpdatedAlbumDTO { AlbumId = 1 }, HttpStatusCode.InternalServerError };
-            yield return new object[] { new UpdatedAlbumDTO { Title = "Test Title" }, HttpStatusCode.InternalServerError };
-            yield return new object[] { new UpdatedAlbumDTO { AlbumId = -1, Title = "Test Title" }, HttpStatusCode.InternalServerError };
+            yield return new object[] { 1, new UpdatedAlbumDTO { Title = "Test Title", Description = "Test Description" }, HttpStatusCode.OK };
+            yield return new object[] { 1, new UpdatedAlbumDTO { Title = "Test Title" }, HttpStatusCode.OK };
+            yield return new object[] { 1, new UpdatedAlbumDTO { }, HttpStatusCode.InternalServerError };
+            yield return new object[] { 0, new UpdatedAlbumDTO { Title = "Test Title" }, HttpStatusCode.InternalServerError };
+            yield return new object[] { -1, new UpdatedAlbumDTO { Title = "Test Title" }, HttpStatusCode.InternalServerError };
         }
     }
 }

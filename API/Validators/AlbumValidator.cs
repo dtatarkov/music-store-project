@@ -6,7 +6,7 @@ namespace API.Validators
 {
     public class AlbumValidator : IAlbumValidator
     {
-        public void ValidateNew(NewAlbumDTO album)
+        public void ValidateNew(AlbumUpdateDTO album)
         {
             if (album.Title.Trim().Length == 0)
                 throw new ValidationException("Title can't be empty");
@@ -14,9 +14,6 @@ namespace API.Validators
 
         public void ValidateUpdate(UpdatedAlbumDTO album)
         {
-            if (album.AlbumId <= 0)
-                throw new ValidationException("Invalid ID");
-
             if (album.Title.Trim().Length == 0)
                 throw new ValidationException("Title can't be empty");
         }

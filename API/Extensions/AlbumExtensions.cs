@@ -13,7 +13,7 @@ namespace API.Extensions
     {
         private static readonly Func<Album, AlbumDTO> toDTO = AlbumExpressions.ToDTO.Compile();
 
-        public static Album ToAlbum(this NewAlbumDTO data)
+        public static Album ToAlbum(this AlbumUpdateDTO data)
         {
             return new Album
             {
@@ -22,11 +22,11 @@ namespace API.Extensions
             };
         }
 
-        public static Album ToAlbum(this UpdatedAlbumDTO data)
+        public static Album ToAlbum(this UpdatedAlbumDTO data, long albumId)
         {
             return new Album
             {
-                AlbumId = data.AlbumId,
+                AlbumId = albumId,
                 Title = data.Title,
                 Description = data.Description
             };

@@ -7,7 +7,7 @@ namespace API.Services
     {
         IQueryable<Album> GetAlbums();
         Task<Album?> GetAlbumByIdAsync(long albumId);
-        Album AddAlbum(NewAlbumDTO data);
-        Task<Album> UpdateAlbumAsync(UpdatedAlbumDTO data);
+        Album AddAlbum(AlbumUpdateDTO data);
+        Task<Album> UpdateAlbumAsync(long albumId, UpdatedAlbumDTO data);
     }
 }

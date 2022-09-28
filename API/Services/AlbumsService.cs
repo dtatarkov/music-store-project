@@ -31,7 +31,7 @@ namespace API.Services
             return await dbContext.Albums.FirstOrDefaultAsync(album => album.AlbumId == albumId);
         }
 
-        public Album AddAlbum(NewAlbumDTO data)
+        public Album AddAlbum(AlbumUpdateDTO data)
         {
             albumValidator.ValidateNew(data);
 
@@ -41,9 +41,9 @@ namespace API.Services
             return album;
         }
 
-        public async Task<Album> UpdateAlbumAsync(UpdatedAlbumDTO data)
+        public async Task<Album> UpdateAlbumAsync(long albumId, UpdatedAlbumDTO data)
         {
-            var album = await GetAlbumByIdAsync(data.AlbumId);
+            var album = await GetAlbumByIdAsync(albumId);
 
             if (album == null)
                 throw new EntityNotFoundException("Album not found");

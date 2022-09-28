@@ -19,10 +19,12 @@ namespace API.Tests.Extensions
         [Fact]
         public void ToAlbum_Update()
         {
-            var updatedAlbumDTO = AlbumsMockData.updatedAlbumDTO;
-            var album = updatedAlbumDTO.ToAlbum();
+            var albumId = 1;
 
-            Assert.Equal(updatedAlbumDTO.AlbumId, album.AlbumId);
+            var updatedAlbumDTO = AlbumsMockData.updatedAlbumDTO;
+            var album = updatedAlbumDTO.ToAlbum(albumId);
+
+            Assert.Equal(albumId, album.AlbumId);
             Assert.Equal(updatedAlbumDTO.Title, album.Title);
             Assert.Equal(updatedAlbumDTO.Description, album.Description);
         }

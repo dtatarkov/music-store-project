@@ -61,6 +61,7 @@ namespace API.Tests.Services
         [Fact]
         public async Task UpdateAlbum()
         {
+            var albumToUpdateId = 1;
             var updatedAlbumDTO = AlbumsMockData.updatedAlbumDTO;
 
             var dbSetMock = AlbumsMockData.albums.BuildMockDbSet();
@@ -69,11 +70,11 @@ namespace API.Tests.Services
             contextMock.Setup(c => c.Albums).Returns(dbSetMock.Object);
 
             var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object);
-            var updatedAlbum = await service.UpdateAlbumAsync(updatedAlbumDTO);
+            var updatedAlbum = await service.UpdateAlbumAsync(albumToUpdateId, updatedAlbumDTO);
 
-            Assert.Equal(updatedAlbum.AlbumId, updatedAlbumDTO.AlbumId);
-            Assert.Equal(updatedAlbum.Title, updatedAlbumDTO.Title);
-            Assert.Equal(updatedAlbum.Description, updatedAlbumDTO.Description);
+            Assert.Equal(albumToUpdateId, updatedAlbum.AlbumId);
+            Assert.Equal(updatedAlbumDTO.Title, updatedAlbum.Title);
+            Assert.Equal(updatedAlbumDTO.Description, updatedAlbum.Description);
         }
     }
 }

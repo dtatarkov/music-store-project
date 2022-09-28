@@ -24,7 +24,7 @@ namespace API.Controllers
         public IQueryable<AlbumDTO> Get() => albumsService.GetAlbums().Select(AlbumExpressions.ToDTO);
 
         [HttpPost]
-        public async Task<AlbumDTO> Post(NewAlbumDTO data)
+        public async Task<AlbumDTO> Post(AlbumUpdateDTO data)
         {
             var album = albumsService.AddAlbum(data);
             await applicationContext.SaveChangesAsync();
@@ -33,9 +33,10 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public async Task<AlbumDTO> Put(UpdatedAlbumDTO data)
+        [Route("{albumId:long}")]
+        public async Task<AlbumDTO> Put(long albumId, UpdatedAlbumDTO data)
         {
-            var album = await albumsService.UpdateAlbumAsync(data);
+            var album = await albumsService.UpdateAlbumAsync(albumId, data);
             await applicationContext.SaveChangesAsync();
 
             return (await albumsService.GetAlbumByIdAsync(album.AlbumId))!.ToDTO();

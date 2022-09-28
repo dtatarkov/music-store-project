@@ -28,7 +28,7 @@ namespace API.IntegrationTests.Controllers
 
         [Theory]
         [MemberData(nameof(AlbumsMockData.GetAlbumsSavingTestDataSetGenerator), MemberType = typeof(AlbumsMockData))]
-        public async Task Post(NewAlbumDTO newAlbumData, HttpStatusCode expectedStatusCode)
+        public async Task Post(AlbumUpdateDTO newAlbumData, HttpStatusCode expectedStatusCode)
         {
             using var app = new TestsApplication();
             using var client = app.CreateClient();
@@ -52,12 +52,12 @@ namespace API.IntegrationTests.Controllers
 
         [Theory]
         [MemberData(nameof(AlbumsMockData.GetAlbumsUpdateTestDataSetGenerator), MemberType = typeof(AlbumsMockData))]
-        public async Task Put(UpdatedAlbumDTO updatedAlbumData, HttpStatusCode expectedStatusCode)
+        public async Task Put(long albumId, UpdatedAlbumDTO updatedAlbumData, HttpStatusCode expectedStatusCode)
         {
             using var app = new TestsApplication();
             using var client = app.CreateClient();
 
-            var request = new HttpRequestMessage(new HttpMethod("Put"), "/v1/albums/");
+            var request = new HttpRequestMessage(new HttpMethod("Put"), $"/v1/albums/{albumId}");
             request.Content = new StringContent(JsonConvert.SerializeObject(updatedAlbumData), Encoding.UTF8, "application/json");
 
             var response = await client.SendAsync(request);
@@ -69,7 +69,7 @@ namespace API.IntegrationTests.Controllers
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var savedAlbum = JsonConvert.DeserializeObject<AlbumDTO>(responseContent);
 
-                Assert.Equal(updatedAlbumData.AlbumId, savedAlbum.AlbumId);
+                Assert.Equal(albumId, savedAlbum.AlbumId);
                 Assert.Equal(updatedAlbumData.Title, savedAlbum.Title);
                 Assert.Equal(updatedAlbumData.Description, savedAlbum.Description);
             }

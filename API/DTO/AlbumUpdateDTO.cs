@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace API.DTO
 {
-    public class NewAlbumDTO
+    public class AlbumUpdateDTO
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
