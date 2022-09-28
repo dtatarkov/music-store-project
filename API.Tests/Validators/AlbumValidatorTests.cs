@@ -1,6 +1,5 @@
-﻿using API.Entities;
+﻿using API.DTO;
 using API.Validators;
-using System.ComponentModel.DataAnnotations;
 
 namespace API.Tests.Validators
 {
@@ -9,29 +8,73 @@ namespace API.Tests.Validators
         private readonly AlbumValidator validator = new AlbumValidator();
 
         [Fact]
-        public void ValidateNew_IdShouldBeDefault()
+        public void ValidateNew_FailsWhenTitleIsMissing()
         {
-            var album = new Album
-            {
-                AlbumId = 1
-            };
+            var album = new NewAlbumDTO { };
+            var exception = Record.Exception(() => validator.ValidateNew(album));
 
-            Assert.Throws<ValidationException>(() => validator.ValidateNew(album));
-        }
-
-        [Fact]
-        public void ValidateNew_IdShouldNotBeEmpty()
-        {
-            var album = new Album { AlbumId = 0 };
-
-            Assert.Throws<ValidationException>(() => validator.ValidateNew(album));
+            Assert.NotNull(exception);
         }
 
         [Fact]
         public void ValidateNew_PassesAlbumWithRequiredFieldsOnly()
         {
-            var album = new Album { AlbumId = 0, Title = "Test Title" };
+            var album = new NewAlbumDTO { Title = "Test Title" };
             var exception = Record.Exception(() => validator.ValidateNew(album));
+
+            Assert.Null(exception);
+        }
+
+        [Fact]
+        public void ValidateNew_PassesAlbumWithAllFields()
+        {
+            var album = new NewAlbumDTO { Title = "Test Title", Description = "Test Description" };
+            var exception = Record.Exception(() => validator.ValidateNew(album));
+
+            Assert.Null(exception);
+        }
+
+        [Fact]
+        public void ValidateUpdate_FailsWhenDefaultIDIsProvided()
+        {
+            var album = new UpdatedAlbumDTO { Title = "Test Title" };
+            var exception = Record.Exception(() => validator.ValidateUpdate(album));
+
+            Assert.NotNull(exception);
+        }
+
+        [Fact]
+        public void ValidateUpdate_FailsWhenInvalidIDIsProvided()
+        {
+            var album = new UpdatedAlbumDTO { AlbumId = -1, Title = "Test Title" };
+            var exception = Record.Exception(() => validator.ValidateUpdate(album));
+
+            Assert.NotNull(exception);
+        }
+
+        [Fact]
+        public void ValidateUpdate_FailsWhenTitleIsMissing()
+        {
+            var album = new UpdatedAlbumDTO { AlbumId = 1 };
+            var exception = Record.Exception(() => validator.ValidateUpdate(album));
+
+            Assert.NotNull(exception);
+        }
+
+        [Fact]
+        public void ValidateUpdate_PassesAlbumWithRequiredFieldsOnly()
+        {
+            var album = new UpdatedAlbumDTO { AlbumId = 1, Title = "Test Title" };
+            var exception = Record.Exception(() => validator.ValidateUpdate(album));
+
+            Assert.Null(exception);
+        }
+
+        [Fact]
+        public void ValidateUpdate_PassesAlbumWithAllFields()
+        {
+            var album = new UpdatedAlbumDTO { AlbumId = 1, Title = "Test Title", Description = "Test Description" };
+            var exception = Record.Exception(() => validator.ValidateUpdate(album));
 
             Assert.Null(exception);
         }

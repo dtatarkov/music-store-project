@@ -31,5 +31,14 @@ namespace API.Controllers
 
             return (await albumsService.GetAlbumByIdAsync(album.AlbumId))!.ToDTO();
         }
+
+        [HttpPut]
+        public async Task<AlbumDTO> Put(UpdatedAlbumDTO data)
+        {
+            var album = await albumsService.UpdateAlbumAsync(data);
+            await applicationContext.SaveChangesAsync();
+
+            return (await albumsService.GetAlbumByIdAsync(album.AlbumId))!.ToDTO();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using API.Entities;
+﻿using API.DTO;
+using API.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace API.Validators
 {
     public interface IAlbumValidator
     {
-        void ValidateNew(Album album);
+        void ValidateNew(NewAlbumDTO album);
+        void ValidateUpdate(UpdatedAlbumDTO album);
     }
 }

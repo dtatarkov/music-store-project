@@ -22,6 +22,16 @@ namespace API.Extensions
             };
         }
 
+        public static Album ToAlbum(this UpdatedAlbumDTO data)
+        {
+            return new Album
+            {
+                AlbumId = data.AlbumId,
+                Title = data.Title,
+                Description = data.Description
+            };
+        }
+
         public static AlbumDTO ToDTO(this Album album) => toDTO(album);
     }
 }

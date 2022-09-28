@@ -48,14 +48,32 @@ namespace API.Tests.Services
         [Fact]
         public void AddAlbum()
         {
-            var albumDTO = new NewAlbumDTO();
+            var newAlbumDTO = AlbumsMockData.newAlbumDTO;
 
             var contextMock = new Mock<IApplicationContext>();
 
             var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object);
-            var album = service.AddAlbum(albumDTO);
+            var newAlbum = service.AddAlbum(newAlbumDTO);
 
-            contextMock.Verify(m => m.Add(album));
+            contextMock.Verify(m => m.Add(newAlbum));
+        }
+
+        [Fact]
+        public async Task UpdateAlbum()
+        {
+            var updatedAlbumDTO = AlbumsMockData.updatedAlbumDTO;
+
+            var dbSetMock = AlbumsMockData.albums.BuildMockDbSet();
+
+            var contextMock = new Mock<IApplicationContext>();
+            contextMock.Setup(c => c.Albums).Returns(dbSetMock.Object);
+
+            var service = new AlbumsService(contextMock.Object, albumsValidatorMock.Object);
+            var updatedAlbum = await service.UpdateAlbumAsync(updatedAlbumDTO);
+
+            Assert.Equal(updatedAlbum.AlbumId, updatedAlbumDTO.AlbumId);
+            Assert.Equal(updatedAlbum.Title, updatedAlbumDTO.Title);
+            Assert.Equal(updatedAlbum.Description, updatedAlbumDTO.Description);
         }
     }
 }

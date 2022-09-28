@@ -1,6 +1,7 @@
 ﻿using API.Context;
 using API.DTO;
 using API.Entities;
+using API.Exceptions;
 using API.Extensions;
 using API.Validators;
 using Microsoft.EntityFrameworkCore;
@@ -32,10 +33,25 @@ namespace API.Services
 
         public Album AddAlbum(NewAlbumDTO data)
         {
-            var album = data.ToAlbum();
-            albumValidator.ValidateNew(album);
+            albumValidator.ValidateNew(data);
 
+            var album = data.ToAlbum();
             dbContext.Add(album);
+
+            return album;
+        }
+
+        public async Task<Album> UpdateAlbumAsync(UpdatedAlbumDTO data)
+        {
+            var album = await GetAlbumByIdAsync(data.AlbumId);
+
+            if (album == null)
+                throw new EntityNotFoundException("Album not found");
+
+            albumValidator.ValidateUpdate(data);
+
+            album.Title = data.Title;
+            album.Description = data.Description;
 
             return album;
         }

@@ -49,5 +49,30 @@ namespace API.IntegrationTests.Controllers
                 Assert.Equal(newAlbumData.Description, savedAlbum.Description);
             }
         }
+
+        [Theory]
+        [MemberData(nameof(AlbumsMockData.GetAlbumsUpdateTestDataSetGenerator), MemberType = typeof(AlbumsMockData))]
+        public async Task Put(UpdatedAlbumDTO updatedAlbumData, HttpStatusCode expectedStatusCode)
+        {
+            using var app = new TestsApplication();
+            using var client = app.CreateClient();
+
+            var request = new HttpRequestMessage(new HttpMethod("Put"), "/v1/albums/");
+            request.Content = new StringContent(JsonConvert.SerializeObject(updatedAlbumData), Encoding.UTF8, "application/json");
+
+            var response = await client.SendAsync(request);
+
+            Assert.Equal(expectedStatusCode, response.StatusCode);
+
+            if (expectedStatusCode == HttpStatusCode.OK)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var savedAlbum = JsonConvert.DeserializeObject<AlbumDTO>(responseContent);
+
+                Assert.Equal(updatedAlbumData.AlbumId, savedAlbum.AlbumId);
+                Assert.Equal(updatedAlbumData.Title, savedAlbum.Title);
+                Assert.Equal(updatedAlbumData.Description, savedAlbum.Description);
+            }
+        }
     }
 }
