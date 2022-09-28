@@ -1,13 +1,10 @@
 ﻿using API.DTO;
 using API.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace API.MockData
 {
+
     public static class AlbumsMockData
     {
         public static Album albumWithAllFieldsFilled = new Album { AlbumId = 3, Title = "Test Title", Description = "Test Description" };
@@ -24,5 +21,12 @@ namespace API.MockData
             Title = "Test Title",
             Description = "Test Description"
         };
+
+        public static IEnumerable<object[]> GetAlbumsSavingTestDataSetGenerator() {
+            yield return new object[] { new NewAlbumDTO { Title = "Test Title", Description = "Test Description" }, HttpStatusCode.OK };
+            yield return new object[] { new NewAlbumDTO { Title = "Test Title" }, HttpStatusCode.OK };
+            yield return new object[] { new NewAlbumDTO { }, HttpStatusCode.InternalServerError };
+            //yield return new object[] { null, HttpStatusCode.BadRequest };
+        }
     }
 }

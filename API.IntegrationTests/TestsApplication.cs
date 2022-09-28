@@ -1,5 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using API.Context;
+using API.IntegrationTests.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,18 +27,27 @@ namespace API.IntegrationTests
         {
             builder.UseEnvironment(environment);
 
-            //// Add mock/test services to the builder here
-            //builder.ConfigureServices(services =>
-            //{
-            //    services.AddScoped(sp =>
-            //    {
-            //        // Replace SQLite with in-memory database for tests
-            //        return new DbContextOptionsBuilder<TodoDb>()
-            //        .UseInMemoryDatabase("Tests")
-            //        .UseApplicationServiceProvider(sp)
-            //        .Options;
-            //    });
-            //});
+            // Add mock/test services to the builder here
+            builder.ConfigureServices(services =>
+            {
+                var descriptor = services.Single(d => d.ServiceType == typeof(DbContextOptions<ApplicationContext>));
+                services.Remove(descriptor);
+
+                services.AddDbContext<ApplicationContext>(options =>
+                {
+                    options.UseInMemoryDatabase("InMemoryDbForTesting");
+                });
+
+                var sp = services.BuildServiceProvider();
+
+                using (var scope = sp.CreateScope())
+                {
+                    var scopedServices = scope.ServiceProvider;
+                    var initializer = scopedServices.GetRequiredService<IDBInitializer>();
+                    
+                    initializer.Initialize();                    
+                }
+            });
 
             return base.CreateHost(builder);
         }
