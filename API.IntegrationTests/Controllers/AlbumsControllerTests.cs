@@ -2,35 +2,37 @@
 using API.MockData;
 using Newtonsoft.Json;
 using System.Net;
+using System.Net.Http.Json;
 using System.Text;
 
 namespace API.IntegrationTests.Controllers
 {
-    public class AlbumsControllerTests: IAsyncDisposable
+    public class AlbumsControllerTests
     {
-        private readonly TestsApplication app;
-        private readonly HttpClient client;
-
-        public AlbumsControllerTests()
-        {
-            app = new TestsApplication();
-            client = app.CreateClient();
-        }
-
         [Fact]
         public async Task Get()
         {
+            using var app = new TestsApplication();
+            using var client = app.CreateClient();
+
             var request = new HttpRequestMessage(new HttpMethod("GET"), "/v1/albums/");
             var response = await client.SendAsync(request);
 
-            response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var albums = await response.Content.ReadFromJsonAsync<AlbumDTO[]>();
+
+            Assert.NotNull(albums);
+            Assert.Equal(3, albums!.Length);
         }
 
         [Theory]
         [MemberData(nameof(AlbumsMockData.GetAlbumsSavingTestDataSetGenerator), MemberType = typeof(AlbumsMockData))]
         public async Task Post(NewAlbumDTO newAlbumData, HttpStatusCode expectedStatusCode)
         {
+            using var app = new TestsApplication();
+            using var client = app.CreateClient();
+
             var request = new HttpRequestMessage(new HttpMethod("Post"), "/v1/albums/");
             request.Content = new StringContent(JsonConvert.SerializeObject(newAlbumData), Encoding.UTF8, "application/json");
 
@@ -40,23 +42,12 @@ namespace API.IntegrationTests.Controllers
 
             if (expectedStatusCode == HttpStatusCode.OK)
             {
-                var exception = await Record.ExceptionAsync(async () =>
-                {
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    var savedAlbum = JsonConvert.DeserializeObject<AlbumDTO>(responseContent);
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var savedAlbum = JsonConvert.DeserializeObject<AlbumDTO>(responseContent);
 
-                    Assert.Equal(newAlbumData.Title, savedAlbum.Title);
-                    Assert.Equal(newAlbumData.Description, savedAlbum.Description);
-                });
-
-                Assert.Null(exception);
+                Assert.Equal(newAlbumData.Title, savedAlbum.Title);
+                Assert.Equal(newAlbumData.Description, savedAlbum.Description);
             }
-        }
-
-        public async ValueTask DisposeAsync()
-        {
-            client.Dispose();
-            await app.DisposeAsync();            
         }
     }
 }

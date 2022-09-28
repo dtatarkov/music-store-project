@@ -3,5 +3,6 @@
     public interface IDBInitializer
     {
         void Initialize();
+        void Reinitialize();
     }
 }

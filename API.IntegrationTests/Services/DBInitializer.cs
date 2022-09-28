@@ -19,18 +19,24 @@ namespace API.IntegrationTests.Services
             this.logger = logger;
         }
 
-        public async Task Initialize()
+        public void Initialize()
         {
             context.Database.EnsureCreated();
 
             try
             {
-                await seeder.SeedDB(context);
+                seeder.SeedDB(context);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, $"An error occurred seeding the database with test messages. Error: {ex.Message}");
             }
+        }
+
+        public void Reinitialize()
+        {
+            context.Database.EnsureDeleted();
+            Initialize();
         }
     }
 }

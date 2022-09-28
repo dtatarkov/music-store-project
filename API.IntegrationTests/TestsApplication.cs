@@ -4,29 +4,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace API.IntegrationTests
 {
     public class TestsApplication: WebApplicationFactory<Program>
     {
-        private readonly string environment;
-
-        public TestsApplication(string environment = "Development")
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            this.environment = environment;
-        }
-
-        protected override IHost CreateHost(IHostBuilder builder)
-        {
-            builder.UseEnvironment(environment);
-
             // Add mock/test services to the builder here
             builder.ConfigureServices(services =>
             {
@@ -38,18 +22,19 @@ namespace API.IntegrationTests
                     options.UseInMemoryDatabase("InMemoryDbForTesting");
                 });
 
+                services.AddScoped<IDBInitializer, DBInitializer>();
+                services.AddScoped<IDBSeeder, DBSeeder>();
+
                 var sp = services.BuildServiceProvider();
 
                 using (var scope = sp.CreateScope())
                 {
                     var scopedServices = scope.ServiceProvider;
                     var initializer = scopedServices.GetRequiredService<IDBInitializer>();
-                    
-                    initializer.Initialize();                    
+
+                    initializer.Reinitialize();
                 }
             });
-
-            return base.CreateHost(builder);
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using API.Context;
+using API.Entities;
+using API.IntegrationTests.Data.Seeds;
 
 namespace API.IntegrationTests.Services
 {
@@ -6,7 +8,8 @@ namespace API.IntegrationTests.Services
     {
         public void SeedDB(ApplicationContext context)
         {
-
+            context.Albums.AddRange(AlbumSeeds.Albums);
+            context.SaveChanges();
         }
     }
 }
