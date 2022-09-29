@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API.MockData", "API.MockDat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API.LogsDB", "API.LogsDB\API.LogsDB.csproj", "{EA3A9B16-74E3-4B0D-853D-7DC78DFA2512}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{22E01EC4-DA58-4B85-A04C-DA43964F8501}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{22E01EC4-DA58-4B85-A04C-DA43964F8501}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
