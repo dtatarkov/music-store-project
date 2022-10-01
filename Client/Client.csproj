@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Folder Include="App\fonts\" />
+    <Folder Include="App\images\" />
     <Folder Include="App\src\components\__tests__\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

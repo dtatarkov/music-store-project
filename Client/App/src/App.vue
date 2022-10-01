@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { RouterLink, RouterView } from 'vue-router';    
+    import { RouterLink, RouterView } from 'vue-router';
 </script>
 
 <template>
@@ -25,7 +25,7 @@
         justify-content: center;
         background-color: var(--color-background-accent);
         font-size: 1.2em;
-        color: var(--color-text-accent);        
+        color: var(--color-text-accent);
     }
 
     .app__header__inner {
