@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
-using System;
+using Client.Services;
+using Client.Settings;
 
 namespace Client
 {
@@ -10,6 +10,8 @@ namespace Client
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();
+            builder.Services.AddScoped(services => new AppSettings(services.GetRequiredService<IConfiguration>()));
+            builder.Services.AddScoped<IClientSettingsService, ClientSettingsService>();
 
             var app = builder.Build();
 

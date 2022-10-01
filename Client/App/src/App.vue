@@ -1,22 +1,36 @@
 <script setup lang="ts">
+    import { computed } from 'vue';
     import { RouterLink, RouterView } from 'vue-router';
+    import { useSettingsStore } from './stores/settings';
+
+    const settingsStore = useSettingsStore();
+
+    const isReady = computed(() => settingsStore.hasSettings);
 </script>
 
 <template>
-    <header class="app__header">
-        <div class="app__header__inner">
-            <div class="app__header__logo">
-                <i class="fa-regular fa-music"></i>
+    <template v-if="isReady">
+        <header class="app__header">
+            <div class="app__header__inner">
+                <div class="app__header__logo">
+                    <i class="fa-regular fa-music"></i>
+                </div>
+
+                <nav class="app__header__navigation">
+                    <RouterLink class="app__header__navigation__link" :to="{ name:'home' }">Home</RouterLink>
+                    <RouterLink class="app__header__navigation__link" :to="{ name:'about' }">About</RouterLink>
+                </nav>
             </div>
+        </header>
 
-            <nav class="app__header__navigation">
-                <RouterLink class="app__header__navigation__link" :to="{ name:'home' }">Home</RouterLink>
-                <RouterLink class="app__header__navigation__link" :to="{ name:'about' }">About</RouterLink>
-            </nav>
+        <RouterView />
+    </template>
+
+    <div class="app__init-view" v-else="isReady">
+        <div class="app__spinner">
+            <i class="fa-duotone fa-spinner-third fa-spin"></i>
         </div>
-    </header>
-
-    <RouterView />
+    </div>
 </template>
 
 <style lang="scss" scoped>
@@ -50,5 +64,20 @@
         &.router-link-active {
             color: var(--color-text-accent-active);
         }
+    }
+
+    .app__init-view {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .app__spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: var(--spinner-font-size);
     }
 </style>

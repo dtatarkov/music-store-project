@@ -17,6 +17,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - API__PublicURL=https://localhost:49132
     ports:
       - "49141:80"
       - "49142:443"
