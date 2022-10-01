@@ -1,5 +1,6 @@
-﻿import type { JSONAppSettings } from '@/types/settings/settings';
-import AppSettings from '@/types/settings/settings';
+﻿import { useInjectable } from '@/hooks/useInjectable';
+import ISettingsService from '@/services/settings.interfaces';
+import type AppSettings from '@/types/settings/settings';
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
 
@@ -8,15 +9,14 @@ export const useSettingsStore = defineStore('settings', () => {
     const hasSettings = computed(() => settings.value != undefined);
     const isUpdatingSettings = ref(false);
 
+    const settingsService = useInjectable(ISettingsService);
+
     async function fetchSettings() {
         if (!isUpdatingSettings.value) {
             try {
                 isUpdatingSettings.value = true;
 
-                const response = await fetch('clientsettings');
-                const data: JSONAppSettings = await response.json();
-
-                settings.value = new AppSettings(data);
+                settings.value = await settingsService.getSettingsAsync();
             } catch (ex) {
                 console.error(ex);
             } finally {
