@@ -19,6 +19,7 @@ $lavender: #E2D1F9;
     --color-background-mute: #{$whiteMute};
     --color-background-accent: #{$teal};
     --color-background-accent-soft: #{lighten($teal, 15%)};
+    --color-background-accent-mute: #{lighten($teal, 30%)};
     --color-border: #{rgba($darkGreyColor, 0.12)};
     --color-border-hover: #{rgba($darkGreyColor, 0.29)};
     --color-heading: #{$indigoColor};

@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import { computed } from 'vue';
     import { RouterLink, RouterView } from 'vue-router';
+    import InitView from './components/InitView.vue';
     import { useSettingsStore } from './stores/settings';
 
     const settingsStore = useSettingsStore();
@@ -26,11 +27,7 @@
         <RouterView />
     </template>
 
-    <div class="app__init-view" v-else="isReady">
-        <div class="app__spinner">
-            <i class="fa-duotone fa-spinner-third fa-spin"></i>
-        </div>
-    </div>
+    <InitView v-else="isReady" />
 </template>
 
 <style lang="scss" scoped>
@@ -64,20 +61,5 @@
         &.router-link-active {
             color: var(--color-text-accent-active);
         }
-    }
-
-    .app__init-view {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .app__spinner {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: var(--spinner-font-size);
     }
 </style>
