@@ -1,0 +1,1 @@
+﻿export type Func<T extends any[], TResult> = (...args: T) => TResult

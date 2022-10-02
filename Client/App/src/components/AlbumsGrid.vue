@@ -1,4 +1,5 @@
 ﻿<script setup lang="ts">
+    import { useSettingsStore } from '@/stores/settings';
     import AlbumBox from '../components/AlbumBox.vue';
     import { useAlbumsStore } from '../stores/albums';
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
     import { computed } from 'vue';
+    import { useSettingsStore } from './stores/settings';
     import { RouterLink, RouterView } from 'vue-router';
     import InitView from './components/InitView.vue';
-    import { useSettingsStore } from './stores/settings';
 
     const settingsStore = useSettingsStore();
 

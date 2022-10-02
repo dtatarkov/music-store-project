@@ -2,7 +2,7 @@
 import ISettingsService from '@/services/settings.interfaces';
 import type AppSettings from '@/types/settings/settings';
 import { defineStore } from 'pinia';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 
 export const useSettingsStore = defineStore('settings', () => {
     const settings = ref<AppSettings | undefined>(undefined);
@@ -23,9 +23,7 @@ export const useSettingsStore = defineStore('settings', () => {
                 isUpdatingSettings.value = false;
             }
         }
-    }
-
-    watch(hasSettings, (hasSettings, prevHasSettings) => console.log({ hasSettings, prevHasSettings }))
+    }    
 
     fetchSettings();
 
