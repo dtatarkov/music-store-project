@@ -3,7 +3,7 @@ import App from './App.vue';
 import router from './router';
 import './assets/main.scss';
 import { createPinia } from 'pinia';
-import containerAccessor from './configuration/inversify/inversify';
+import containerAccessor from './configuration/inversify/accessor';
 
 const pinia = createPinia();
 const app = createApp(App)
